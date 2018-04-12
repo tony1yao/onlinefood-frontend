@@ -137,7 +137,7 @@ export default {
             height 12px
             display inline-block
             vertical-align top
-            margin-top 7px
+            margin-top 8px
             bg-image('bulletin')
             background-size 22px 12px
             background-repeat no-repeat
