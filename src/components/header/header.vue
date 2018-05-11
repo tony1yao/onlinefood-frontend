@@ -29,38 +29,40 @@
     <div class="background">
         <img :src="seller.avatar" height="100%" width="100%">
     </div>
-    <div class="detail" v-show="detailShow">
-        <div class="detail-wrapper clearfix">
-            <div class="detail-main">
-                <h1 class="name">{{seller.name}}</h1>
-                <div class="star-wrapper">
-                    <star :size="48" :score="seller.score"></star>
-                </div>
-                <div class="title">
-                    <div class="line"></div>
-                    <div class="text">Promotions</div>
-                    <div class="line"></div>
-                </div>
-                <ul class="supports" v-if="seller.supports">
-                    <li class="support-item" v-for="(item,index) in seller.supports" :key="index">
-                        <span class="icon" :class="classMap[seller.supports[index].type]"></span>
-                        <span class="text">{{seller.supports[index].description}}</span>
-                    </li>
-                </ul>
-                <div class="title">
-                    <div class="line"></div>
-                    <div class="text">Notice</div>
-                    <div class="line"></div>
-                </div>
-                <div class="bulletin">
-                    <p class="content">{{seller.bulletin}}</p>
+    <transition name="fade">
+        <div class="detail" v-show="detailShow">
+            <div class="detail-wrapper clearfix">
+                <div class="detail-main">
+                    <h1 class="name">{{seller.name}}</h1>
+                    <div class="star-wrapper">
+                        <star :size="48" :score="seller.score"></star>
+                    </div>
+                    <div class="title">
+                        <div class="line"></div>
+                        <div class="text">Promotions</div>
+                        <div class="line"></div>
+                    </div>
+                    <ul class="supports" v-if="seller.supports">
+                        <li class="support-item" v-for="(item,index) in seller.supports" :key="index">
+                            <span class="icon" :class="classMap[seller.supports[index].type]"></span>
+                            <span class="text">{{seller.supports[index].description}}</span>
+                        </li>
+                    </ul>
+                    <div class="title">
+                        <div class="line"></div>
+                        <div class="text">Notice</div>
+                        <div class="line"></div>
+                    </div>
+                    <div class="bulletin">
+                        <p class="content">{{seller.bulletin}}</p>
+                    </div>
                 </div>
             </div>
+            <div class="detail-close" @click="closeDetail">
+                <i class="icon-close"></i>
+            </div>
         </div>
-        <div class="detail-close" @click="closeDetail">
-            <i class="icon-close"></i>
-        </div>
-    </div>
+    </transition>
 </div>
 </template>
 
@@ -216,7 +218,13 @@ export default {
         width 100%
         height 100%
         overflow auto
-        background-color rgba(7,17,27,0.8)
+        opacity: 1
+        background: rgba(7, 17, 27, 0.8)
+        &.fade-enter-active, &.fade-leave-active
+            transition: all 0.5s
+        &.fade-enter, &.fade-leave-active
+            opacity: 0
+            background: rgba(7, 17, 27, 0)
         .detail-wrapper
             min-height 100%
             width 100%
@@ -277,7 +285,7 @@ export default {
                             font-size 13px
                 .bulletin
                     width 80%
-                    margin 0 auto 
+                    margin 0 auto
                     .content
                         padding 0 12px
                         line-height 24px
@@ -287,7 +295,7 @@ export default {
             position relative
             height 32px
             width 32px
-            margin -64px auto 0 auto
+            margin -85px auto 0 auto
             clear both
-            font-size 32px
+            font-size 25px
 </style>
