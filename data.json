@@ -50,7 +50,7 @@
   },
   "goods": [
     {
-      "name": "热销榜",
+      "name": "Best Sellers",
       "type": -1,
       "foods": [
         {
@@ -395,7 +395,7 @@
       ]
     },
     {
-      "name": "单人精彩套餐",
+      "name": "Promotional Subs",
       "type": 2,
       "foods": [
         {
@@ -421,7 +421,7 @@
       ]
     },
     {
-      "name": "冰爽饮品限时特惠",
+      "name": "Promotion on drinks",
       "type": 1,
       "foods": [
         {
@@ -454,7 +454,7 @@
       ]
     },
     {
-      "name": "精选热菜",
+      "name": "Burgers",
       "type": -1,
       "foods": [
         {
@@ -541,7 +541,7 @@
       ]
     },
     {
-      "name": "爽口凉菜",
+      "name": "New items",
       "type": -1,
       "foods": [
         {
@@ -615,7 +615,7 @@
       ]
     },
     {
-      "name": "精选套餐",
+      "name": "Combos",
       "type": -1,
       "foods": [
         {
@@ -661,7 +661,7 @@
       ]
     },
     {
-      "name": "果拼果汁",
+      "name": "Juices",
       "type": -1,
       "foods": [
         {
@@ -740,7 +740,7 @@
       ]
     },
     {
-      "name": "小吃主食",
+      "name": "Sides",
       "type": -1,
       "foods": [
         {
@@ -916,7 +916,7 @@
       ]
     },
     {
-      "name": "特色粥品",
+      "name": "Others",
       "type": -1,
       "foods": [
         {
