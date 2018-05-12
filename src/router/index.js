@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import VueResource from 'vue-resource';
-import goods from 'components/goods/goods';
-import ratings from 'components/ratings/ratings';
+import items from 'components/items/items';
+import comments from 'components/comments/comments';
 import seller from 'components/seller/seller';
 
 import 'common/stylus/index.styl';
@@ -15,13 +15,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: goods
+      component: items
     }, {
-      path: '/goods',
-      component: goods
+      path: '/items',
+      component: items
     }, {
-      path: '/ratings',
-      component: ratings
+      path: '/comments',
+      component: comments
     }, {
       path: '/seller',
       component: seller

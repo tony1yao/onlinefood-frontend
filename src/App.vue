@@ -3,10 +3,10 @@
     <v-header :seller="seller"></v-header>
     <div class="tab border-1px">
       <div class="tab-item">
-        <router-link to="/goods">Items</router-link>
+        <router-link to="/items">Items</router-link>
       </div>
       <div class="tab-item">
-        <router-link to="/ratings">Comments</router-link>
+        <router-link to="/comments">Comments</router-link>
       </div>
       <div class="tab-item">
         <router-link to="/seller">Seller</router-link>

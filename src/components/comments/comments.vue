@@ -1,5 +1,5 @@
 <template>
-    <div>Items</div>
+    <div>Comments</div>
 </template>
 
 <script>
