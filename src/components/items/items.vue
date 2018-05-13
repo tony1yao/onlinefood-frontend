@@ -1,6 +1,6 @@
 <template>
     <div class="items">
-        <div class="menu-wrapper">
+        <div class="menu-wrapper" ref="menuWrapper">
             <ul>
                 <li v-for="(item,index) in items" :key="index" class="menu-item">
                     <span class="text border-1px">
@@ -10,7 +10,7 @@
                 </li>
             </ul>
         </div>
-        <div class="item-wrapper">
+        <div class="item-wrapper" ref="itemWrapper">
             <ul>
                 <li v-for="(item,index) in items" :key="index" class="item-list">
                     <h1 class="title">{{item.name}}</h1>
@@ -23,8 +23,7 @@
                                 <h2 class="name">{{food.name}}</h2>
                                 <p class="desc">{{food.description}}</p>
                                 <div class="extra">
-                                    <span class="count">{{food.sellCount}} sold, </span>
-                                    <span>Good ratings:{{food.rating}}%</span>
+                                    <span class="count">{{food.sellCount}} sold,</span><span>Good ratings:{{food.rating}}%</span>
                                 </div>
                                 <div class="price">
                                     <span class="currentprice">${{food.price}}</span>
@@ -39,7 +38,8 @@
     </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
+import BScroll from 'better-scroll';
 const ERR_OK = 0;
 export default {
     data() {
@@ -57,12 +57,22 @@ export default {
                 response = response.body;
                 if (response.errno === ERR_OK) {
                     this.items = response.data;
+                    this.$nextTick(() => {
+                        this._initScroll();
+                    });
                     console.log(this.items);
                 }
             }
         );
 
         this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+    },
+    methods: {
+        _initScroll() {
+            this.nemuScroll = new BScroll(this.$refs.menuWrapper, {});
+
+            this.itemScroll = new BScroll(this.$refs.itemWrapper, {});
+        }
     }
 };
 </script>
@@ -145,8 +155,9 @@ export default {
                         color rgb(147,153,159)
                     .desc
                         margin-bottom 8px
+                        line-height 12px
                     .extra
-                        &.count
+                        .count
                             margin-right 12px
                     .price
                         font-weight 700
@@ -158,5 +169,5 @@ export default {
                         .oldprice
                             text-decoration line-through
                             font-size 10px
-                            color rgb(147,153,159) 
+                            color rgb(147,153,159)
 </style>
