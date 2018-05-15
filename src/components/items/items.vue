@@ -2,7 +2,7 @@
     <div class="items">
         <div class="menu-wrapper" ref="menuWrapper">
             <ul>
-                <li v-for="(item,index) in items" :key="index" class="menu-item">
+                <li v-for="(item,index) in items" :key="index" class="menu-item" :class="{'current': currentIndex === index}">
                     <span class="text border-1px">
                         <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
                         {{item.name}}
@@ -12,7 +12,7 @@
         </div>
         <div class="item-wrapper" ref="itemWrapper">
             <ul>
-                <li v-for="(item,index) in items" :key="index" class="item-list">
+                <li v-for="(item,index) in items" :key="index" class="item-list item-list-hook">
                     <h1 class="title">{{item.name}}</h1>
                     <ul>
                         <li v-for="(food,index) in item.foods" :key="index" class="item-food border-1px">
@@ -44,12 +44,26 @@ const ERR_OK = 0;
 export default {
     data() {
         return {
-            items: []
+            items: [],
+            heightList: [],
+            scrollY: 0
         };
     },
     props: {
         seller: {
             type: Object
+        }
+    },
+    computed: {
+        currentIndex() {
+            for (let i = 0; i < this.heightList.length; i++) {
+                let height1 = this.heightList[i];
+                let height2 = this.heightList[i + 1];
+                if ((!height2) || (this.scrollY > height1 && this.scrollY < height2)) {
+                    return i;
+                }
+            }
+            return 0;
         }
     },
     created() {
@@ -59,6 +73,7 @@ export default {
                     this.items = response.data;
                     this.$nextTick(() => {
                         this._initScroll();
+                        this._calculateHeight();
                     });
                     console.log(this.items);
                 }
@@ -71,7 +86,23 @@ export default {
         _initScroll() {
             this.nemuScroll = new BScroll(this.$refs.menuWrapper, {});
 
-            this.itemScroll = new BScroll(this.$refs.itemWrapper, {});
+            this.itemScroll = new BScroll(this.$refs.itemWrapper, {
+                probeType: 3
+            });
+
+            this.itemScroll.on("scroll", (pos) => {
+                this.scrollY = Math.abs(Math.round(pos.y));
+            });
+        },
+        _calculateHeight() {
+            let itemList = this.$refs.itemWrapper.getElementsByClassName("item-list-hook");
+            let height = 0;
+            this.heightList.push(height);
+            for (let i = 0; i < itemList.length; i++) {
+                let item = itemList[i];
+                height += item.clientHeight;
+                this.heightList.push(height);
+            }
         }
     }
 };
@@ -96,6 +127,14 @@ export default {
                 width 56px
                 line-height 14px
                 padding 0 12px
+                &.current
+                    position relative
+                    margin-top -1px
+                    z-index 10
+                    background #fff
+                    font-weight 700
+                    .text
+                        border-none()
                 .icon
                     display inline-block
                     width 12px
