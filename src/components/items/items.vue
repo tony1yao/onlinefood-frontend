@@ -2,7 +2,8 @@
     <div class="items">
         <div class="menu-wrapper" ref="menuWrapper">
             <ul>
-                <li v-for="(item,index) in items" :key="index" class="menu-item" :class="{'current': currentIndex === index}">
+                <li v-for="(item,index) in items" :key="index" class="menu-item"
+                :class="{'current': currentIndex === index}" @click="selectMenu(index,$event) ">
                     <span class="text border-1px">
                         <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
                         {{item.name}}
@@ -59,7 +60,7 @@ export default {
             for (let i = 0; i < this.heightList.length; i++) {
                 let height1 = this.heightList[i];
                 let height2 = this.heightList[i + 1];
-                if ((!height2) || (this.scrollY > height1 && this.scrollY < height2)) {
+                if ((!height2) || (this.scrollY >= height1 && this.scrollY < height2)) {
                     return i;
                 }
             }
@@ -75,7 +76,6 @@ export default {
                         this._initScroll();
                         this._calculateHeight();
                     });
-                    console.log(this.items);
                 }
             }
         );
@@ -83,8 +83,18 @@ export default {
         this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     },
     methods: {
+        selectMenu(index, event) {
+            if (!event._constructed) {
+                return;
+            }
+            let itemList = this.$refs.itemWrapper.getElementsByClassName("item-list-hook");
+            let element = itemList[index];
+            this.itemScroll.scrollToElement(element, 300);
+        },
         _initScroll() {
-            this.nemuScroll = new BScroll(this.$refs.menuWrapper, {});
+            this.nemuScroll = new BScroll(this.$refs.menuWrapper, {
+                click: true
+            });
 
             this.itemScroll = new BScroll(this.$refs.itemWrapper, {
                 probeType: 3
