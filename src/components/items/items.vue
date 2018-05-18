@@ -36,11 +36,14 @@
                 </li>
             </ul>
         </div>
+        <cart :delivery-fee=seller.deliveryPrice :min-fee=seller.minPrice></cart>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll';
+import cart from 'components/cart/cart';
+
 const ERR_OK = 0;
 export default {
     data() {
@@ -114,6 +117,9 @@ export default {
                 this.heightList.push(height);
             }
         }
+    },
+    components: {
+        cart
     }
 };
 </script>
