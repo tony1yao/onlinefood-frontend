@@ -56,20 +56,20 @@ export default {
             return count;
         },
         payDesc() {
-            if(this.totalPrice === 0 ) {
-                return "Deliver from $"+this.minFee;
-            }else if(this.totalPrice<this.minFee) {
+            if (this.totalPrice === 0) {
+                return "Deliver from $" + this.minFee;
+            } else if (this.totalPrice < this.minFee) {
                 let diff = this.minFee - this.totalPrice;
-                return "$"+diff+" more needed";
-            }else {
+                return "$" + diff + " more needed";
+            } else {
                 return "Check out";
             }
         },
         payClass() {
-            if(this.totalPrice < this.minFee) {
+            if (this.totalPrice < this.minFee) {
                 return 'not-enough';
-            }else {
-                return 'enough'
+            } else {
+                return 'enough';
             }
         }
     }

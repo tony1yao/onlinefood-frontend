@@ -30,6 +30,9 @@
                                     <span class="currentprice">${{food.price}}</span>
                                     <span v-show="food.oldPrice" class="oldprice">{{food.oldPrice}}</span>
                                 </div>
+                                <div class="cartcontroller-wrapper">
+                                    <cartcontroller :item = food></cartcontroller>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -43,6 +46,7 @@
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll';
 import cart from 'components/cart/cart';
+import cartcontroller from 'components/cartcontroller/cartcontroller';
 
 const ERR_OK = 0;
 export default {
@@ -100,7 +104,8 @@ export default {
             });
 
             this.itemScroll = new BScroll(this.$refs.itemWrapper, {
-                probeType: 3
+                probeType: 3,
+                click: true
             });
 
             this.itemScroll.on("scroll", (pos) => {
@@ -119,7 +124,8 @@ export default {
         }
     },
     components: {
-        cart
+        cart,
+        cartcontroller
     }
 };
 </script>
@@ -225,4 +231,9 @@ export default {
                             text-decoration line-through
                             font-size 10px
                             color rgb(147,153,159)
+                    .cartcontroller-wrapper
+                            position absolute
+                            right 0
+                            bottom 2px
+
 </style>
