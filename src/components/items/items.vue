@@ -39,7 +39,7 @@
                 </li>
             </ul>
         </div>
-        <cart :delivery-fee=seller.deliveryPrice :min-fee=seller.minPrice></cart>
+        <cart :item-selected="selectedItems" :delivery-fee=seller.deliveryPrice :min-fee=seller.minPrice></cart>
     </div>
 </template>
 
@@ -72,6 +72,17 @@ export default {
                 }
             }
             return 0;
+        },
+        selectedItems() {
+            let selectedItems = [];
+            this.items.forEach((item) => {
+                item.foods.forEach((food) => {
+                    if (food.count) {
+                        selectedItems.push(food);
+                    }
+                });
+            });
+            return selectedItems;
         }
     },
     created() {

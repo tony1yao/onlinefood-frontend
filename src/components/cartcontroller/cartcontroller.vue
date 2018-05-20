@@ -1,6 +1,8 @@
 <template>
     <div class="cartcontroller">
-        <div class="cart-decrease icon-remove_circle_outline" v-show="item.count>0" @click="removeItem"></div>
+        <div class="cart-decrease" v-show="item.count>0" @click="removeItem">
+            <span class="inner icon-remove_circle_outline"></span>
+        </div>
         <div class="cart-count" v-show="item.count>0">{{item.count}}</div>
         <div class="cart-increase icon-add_circle" @click="addItem"></div>
     </div>
@@ -39,12 +41,25 @@ export default {
 <style lang="stylus">
     .cartcontroller
         font-size 0
-        .cart-decrease, .cart-increase
+        .cart-decrease
             padding 6px  //为了增加按钮的点击区域
             display inline-block
-            font-size 24px
-            line-height 24px
-            color rgb(0,160,220)
+            transform translate3d(0,0,0)
+            opacity 1
+            .inner
+                display inline-block
+                font-size 24px
+                line-height 24px
+                color rgb(0,160,220)
+                transition all 0.4s linear
+                transform rotate(0)
+            &.move-enter-active, &.move-leave-active
+                transition: all 0.4s linear
+            &.move-enter, &.move-leave-active
+                opacity 0
+                transform translate3d(24px,0,0)
+                .inner
+                    transform rotate(180deg)
         .cart-count
             display inline-block
             vertical-align top
@@ -54,4 +69,10 @@ export default {
             text-align center
             font-size 10px
             color rgb(147,153,159)
+        .cart-increase
+            padding 6px  //为了增加按钮的点击区域
+            display inline-block
+            font-size 24px
+            line-height 24px
+            color rgb(0,160,220)
 </style>
