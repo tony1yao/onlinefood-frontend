@@ -1,6 +1,6 @@
 <template>
   <div class="cart">
-      <div class="content">
+      <div class="content" @click="toggleList">
           <div class="content-left">
               <div class="logo-wrapper">
                   <div class="logo" :class="{'highlight' : totalCount>0}">
@@ -14,10 +14,33 @@
           <div class="content-right">
               <div class="pay" :class="payClass">{{payDesc}}</div>
           </div>
+          <transition name="showlist">
+            <div class="cart-list" v-show="showList">
+                <div class="list-header">
+                    <h1>Shopping Cart</h1>
+                    <span class="empty">Clear</span>
+                </div>
+                <div class="list-content">
+                    <ul>
+                        <li class="item" v-for="(item,index) in itemSelected" :key="index">
+                            <span class="name">{{item.name}}</span>
+                            <div class="price">
+                                <span>${{item.price*item.count}}</span>
+                            </div>
+                            <div class="cartcontroller-wrapp">
+                                <cartcontroller :item = "item"></cartcontroller>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+          </transition>
       </div>
   </div>
 </template>
 <script>
+import cartcontroller from 'components/cartcontroller/cartcontroller';
+
 export default {
     props: {
         itemSelected: {
@@ -70,6 +93,33 @@ export default {
                 return 'not-enough';
             } else {
                 return 'enough';
+            }
+        },
+        showList() {
+            if (!this.totalCount) {
+                this.isListShown = false;
+                return false;
+            }
+            else {
+                return !this.isListShown;
+            }
+        }
+    },
+    components: {
+        cartcontroller
+    },
+    data() {
+        return {
+            isListShown: false
+        }
+    },
+    methods: {
+        toggleList() {
+            if (!this.totalCount) {
+                return;
+            }
+            else {
+                this.isListShown = !this.isListShown;
             }
         }
     }
@@ -162,4 +212,35 @@ export default {
                     &.enough
                         background #00b43c
                         color #ffffff
+            .cart-list
+                position absolute
+                top 0
+                left 0
+                width 100%
+                z-index -1
+                transform translate3d(0,-100%,0)
+                &.showlist-enter-active, &.showlist-leave-active
+                    transition all 0.5s
+                &.showlist-enter, &.showlist-leave-active
+                    transform translate3d(0,0,0)
+                .list-header
+                    height 40px
+                    line-height 40px
+                    padding 0 18px
+                    background #f3f5f7
+                    border-bottom 1px solid rgba(7,17,27,0.1)
+                    .title
+                        float left
+                        font-size 14px
+                        color rgb(7,17,27)
+                    .empty
+                        float right
+                        font-size 12px
+                        color rgb(0,160,220)
+                .list-content
+                    max-height 217px
+                    padding 0 18px
+                    background #ffffff
+                    overflow hidden
+
 </style>
