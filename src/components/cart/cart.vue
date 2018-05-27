@@ -17,17 +17,17 @@
           <transition name="showlist">
             <div class="cart-list" v-show="showList">
                 <div class="list-header">
-                    <h1>Shopping Cart</h1>
+                    <h1 class="title">Shopping Cart</h1>
                     <span class="empty">Clear</span>
                 </div>
-                <div class="list-content">
+                <div class="list-content" ref="listContent">
                     <ul>
                         <li class="item" v-for="(item,index) in itemSelected" :key="index">
                             <span class="name">{{item.name}}</span>
                             <div class="price">
                                 <span>${{item.price*item.count}}</span>
                             </div>
-                            <div class="cartcontroller-wrapp">
+                            <div class="cartcontroller-wrapper">
                                 <cartcontroller :item = "item"></cartcontroller>
                             </div>
                         </li>
@@ -40,6 +40,7 @@
 </template>
 <script>
 import cartcontroller from 'components/cartcontroller/cartcontroller';
+import BScroll from 'better-scroll';
 
 export default {
     props: {
@@ -99,9 +100,20 @@ export default {
             if (!this.totalCount) {
                 this.isListShown = false;
                 return false;
-            }
-            else {
-                return !this.isListShown;
+            } else {
+                let show = !this.isListShown;
+                if (show) {
+                    this.$nextTick(() => {
+                        if (!this.scroll) {
+                            this.scroll = new BScroll(this.$refs.listContent, {
+                                click: true
+                            });
+                        } else {
+                            this.scroll.refresh();
+                        }
+                    });
+                }
+                return show;
             }
         }
     },
@@ -111,14 +123,11 @@ export default {
     data() {
         return {
             isListShown: false
-        }
+        };
     },
     methods: {
         toggleList() {
-            if (!this.totalCount) {
-                return;
-            }
-            else {
+            if (this.totalCount) {
                 this.isListShown = !this.isListShown;
             }
         }
@@ -126,6 +135,7 @@ export default {
 };
 </script>
 <style lang="stylus">
+@import "../../common/stylus/mixin.styl"
     .cart
         position fixed
         left 0
@@ -231,7 +241,8 @@ export default {
                     border-bottom 1px solid rgba(7,17,27,0.1)
                     .title
                         float left
-                        font-size 14px
+                        font-size 12px
+                        font-weight bold
                         color rgb(7,17,27)
                     .empty
                         float right
@@ -242,5 +253,27 @@ export default {
                     padding 0 18px
                     background #ffffff
                     overflow hidden
+                    z-index 200
+                    .item
+                        position relative
+                        padding 12px 0
+                        box-sizing border-box
+                        border-1px(rgba(7,17,27,0.1))
+                        .name
+                            line-height 24px
+                            font-size 14px
+                            color rgb(7,17,27)
+                        .price
+                            position absolute
+                            right 90px
+                            bottom 12px
+                            line-height 24px
+                            font-size 14px
+                            font-weight 700
+                            color rgb(240,20,20)
+                        .cartcontroller-wrapper
+                            position absolute
+                            right 0
+                            bottom 16px
 
 </style>

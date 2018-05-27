@@ -25,7 +25,6 @@ export default {
     },
     methods: {
         addItem() {
-            console.log("click");
             if (!this.item.count) {
                 Vue.set(this.item, 'count', 1); // 添加属性的时候需要用Vue.set，而不能直接用this.item.count = 1 , 这样，这个dom变化才会被观测到。
             } else {
