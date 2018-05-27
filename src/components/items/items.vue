@@ -16,7 +16,7 @@
                 <li v-for="(item,index) in items" :key="index" class="item-list item-list-hook">
                     <h1 class="title">{{item.name}}</h1>
                     <ul>
-                        <li v-for="(food,index) in item.foods" :key="index" class="item-food border-1px">
+                        <li v-for="(food,index) in item.foods" :key="index" class="item-food border-1px" @click="selectItem(food,$event)">
                             <div class="icon">
                                 <img height="57" width="57" :src="food.icon" alt="icon of the item">
                             </div>
@@ -40,6 +40,7 @@
             </ul>
         </div>
         <cart :item-selected="selectedItems" :delivery-fee=seller.deliveryPrice :min-fee=seller.minPrice></cart>
+        <itemdetails :item="itemSelected" ref="fooddetails"></itemdetails>
     </div>
 </template>
 
@@ -47,6 +48,7 @@
 import BScroll from 'better-scroll';
 import cart from 'components/cart/cart';
 import cartcontroller from 'components/cartcontroller/cartcontroller';
+import itemdetails from 'components/itemdetails/itemdetails'; 
 
 const ERR_OK = 0;
 export default {
@@ -54,7 +56,8 @@ export default {
         return {
             items: [],
             heightList: [],
-            scrollY: 0
+            scrollY: 0,
+            itemSelected: {}
         };
     },
     props: {
@@ -109,6 +112,13 @@ export default {
             let element = itemList[index];
             this.itemScroll.scrollToElement(element, 300);
         },
+        selectItem(food,event) {
+            if(!event._constructed) {
+                return;
+            }
+            this.itemSelected = food;
+            this.$refs.fooddetails.show();
+        },
         _initScroll() {
             this.nemuScroll = new BScroll(this.$refs.menuWrapper, {
                 click: true
@@ -136,7 +146,8 @@ export default {
     },
     components: {
         cart,
-        cartcontroller
+        cartcontroller,
+        itemdetails
     }
 };
 </script>

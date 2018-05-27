@@ -133,7 +133,7 @@ export default {
     },
     methods: {
         toggleList() {
-            console.log("toggleList()")
+            console.log("toggleList()");
             if (this.totalCount) {
                 this.isListShown = !this.isListShown;
             }
@@ -144,10 +144,10 @@ export default {
             });
         },
         pay() {
-            if (this.totalPrice <  this.minFee) {
+            if (this.totalPrice < this.minFee) {
                 return;
             }
-            window.alert('pay$ ${this.totalPrice}')
+            window.alert('pay${this.totalPrice}');
         }
     }
 };
