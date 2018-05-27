@@ -1,41 +1,48 @@
 <template>
-  <div class="cart">
-      <div class="content" @click="toggleList">
-          <div class="content-left">
-              <div class="logo-wrapper">
-                  <div class="logo" :class="{'highlight' : totalCount>0}">
-                      <i class="icon-shopping_cart" :class="{'highlight' : totalCount>0}"></i>
-                  </div>
-                  <div class="count" v-show="totalCount>0"> {{totalCount}} </div>
-              </div>
-              <div class="price" :class="{'highlight' : totalPrice>0}">${{totalPrice}}</div>
-              <div class="desc">Plus ${{deliveryFee}} delivery fee</div>
-          </div>
-          <div class="content-right">
-              <div class="pay" :class="payClass">{{payDesc}}</div>
-          </div>
-          <transition name="showlist">
-            <div class="cart-list" v-show="showList">
-                <div class="list-header">
-                    <h1 class="title">Shopping Cart</h1>
-                    <span class="empty">Clear</span>
+
+  <div class="root">
+    <div class="cart">
+        <div class="content" @click="toggleList">
+            <div class="content-left">
+                <div class="logo-wrapper">
+                    <div class="logo" :class="{'highlight' : totalCount>0}">
+                        <i class="icon-shopping_cart" :class="{'highlight' : totalCount>0}"></i>
+                    </div>
+                    <div class="count" v-show="totalCount>0"> {{totalCount}} </div>
                 </div>
-                <div class="list-content" ref="listContent">
-                    <ul>
-                        <li class="item" v-for="(item,index) in itemSelected" :key="index">
-                            <span class="name">{{item.name}}</span>
-                            <div class="price">
-                                <span>${{item.price*item.count}}</span>
-                            </div>
-                            <div class="cartcontroller-wrapper">
-                                <cartcontroller :item = "item"></cartcontroller>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                <div class="price" :class="{'highlight' : totalPrice>0}">${{totalPrice}}</div>
+                <div class="desc">Plus ${{deliveryFee}} delivery fee</div>
             </div>
-          </transition>
-      </div>
+            <div class="content-right" @click.stop.prevent="pay">
+                <div class="pay" :class="payClass">{{payDesc}}</div>
+            </div>
+            <transition name="showlist">
+                <div class="cart-list" v-show="showList">
+                    <div class="list-header">
+                        <h1 class="title">Shopping Cart</h1>
+                        <span class="clear" @click="clear">Clear</span>
+                    </div>
+                    <div class="list-content" ref="listContent">
+                        <ul>
+                            <li class="item" v-for="(item,index) in itemSelected" :key="index">
+                                <span class="name">{{item.name}}</span>
+                                <div class="price">
+                                    <span>${{item.price*item.count}}</span>
+                                </div>
+                                <div class="cartcontroller-wrapper">
+                                    <cartcontroller :item = "item"></cartcontroller>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </div>
+    <transition name="fade">
+        <div class="list-mask" v-show="showList" @click="toggleList">
+        </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -98,10 +105,9 @@ export default {
         },
         showList() {
             if (!this.totalCount) {
-                this.isListShown = false;
                 return false;
             } else {
-                let show = !this.isListShown;
+                let show = this.isListShown;
                 if (show) {
                     this.$nextTick(() => {
                         if (!this.scroll) {
@@ -127,9 +133,21 @@ export default {
     },
     methods: {
         toggleList() {
+            console.log("toggleList()")
             if (this.totalCount) {
                 this.isListShown = !this.isListShown;
             }
+        },
+        clear() {
+            this.itemSelected.forEach((item) => {
+                item.count = 0;
+            });
+        },
+        pay() {
+            if (this.totalPrice <  this.minFee) {
+                return;
+            }
+            window.alert('pay$ ${this.totalPrice}')
         }
     }
 };
@@ -244,7 +262,7 @@ export default {
                         font-size 12px
                         font-weight bold
                         color rgb(7,17,27)
-                    .empty
+                    .clear
                         float right
                         font-size 12px
                         color rgb(0,160,220)
@@ -274,6 +292,20 @@ export default {
                         .cartcontroller-wrapper
                             position absolute
                             right 0
-                            bottom 16px
-
+                            bottom 5px
+    .list-mask
+        position fixed
+        top 0
+        left 0
+        width 100%
+        height 100%
+        z-index 40
+        backdrop-filter: blur(10px)
+        opacity: 1
+        background: rgba(7, 17, 27, 0.6)
+        &.fade-enter-active, &.fade-leave-active
+            transition all 0.5s
+        &.fade-enter, &.fade-leave-active
+            opacity 0
+            background: rgba(7, 17, 27, 0)
 </style>
